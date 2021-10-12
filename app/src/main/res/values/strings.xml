@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GW_Android</string>
+    <string name="title1">Сокращение</string>
+    <string name="title2">ссылок</string>
+    <string name="lb_link">Длинная ссылка</string>
+    <string name="lb_link_name">Сокращенная ссылка</string>
+    <string name="btn">Готово</string>
+    <string name="list_title">Сокращение:</string>
+
+</resources>
