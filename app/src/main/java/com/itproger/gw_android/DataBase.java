@@ -66,4 +66,20 @@ public class DataBase extends SQLiteOpenHelper {
         return allTask;
     }
 
+    public boolean checkLinkName(String link_name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor check = db.rawQuery("SELECT * FROM " + db_table + " WHERE " + db_link_name +  " = '" + link_name + "' LIMIT 1 ", null);
+        //SELECT * FROM `links`  WHERE link_name = 'git' LIMIT 1
+        if(check.getCount() <= 0) {
+            check.close();
+            db.close();
+            return false;
+        } else {
+            check.close();
+            db.close();
+            return true;
+        }
+    }
+
+
 }
