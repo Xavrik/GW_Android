@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 String browser = "https://www."+dataBase.findLink(allTask.get(position));
 //                    Toast.makeText(getApplicationContext(),"link: " +  allTask.get(position),
 //                            Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(),"link: " +  browser,
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),"link: " +  browser,
+//                            Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(browser));
                     startActivity(i);
