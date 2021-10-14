@@ -1,5 +1,6 @@
 package com.itproger.gw_android;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -47,9 +48,9 @@ public class DataBase extends SQLiteOpenHelper {
         db.insert(db_table,null,values);
     }
 
-    public void deleteData(String link){
+    public void deleteData(String link_name){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(db_table, db_link + " = ?",new String[]{link});
+        db.delete(db_table, db_link_name + " = ?",new String[]{link_name});
         db.close();
     }
 
@@ -79,6 +80,20 @@ public class DataBase extends SQLiteOpenHelper {
             db.close();
             return true;
         }
+    }
+
+    @SuppressLint("Range")
+    public String findLink(String link_name) {
+        String rv = "not found";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor check = db.rawQuery("SELECT * FROM " + db_table + " WHERE " + db_link_name +  " = '" + link_name + "' LIMIT 1 ", null);
+        //SELECT * FROM `links`  WHERE link_name = 'git' LIMIT
+        if (check.moveToFirst()) {
+            rv = check.getString(check.getColumnIndex(db_link));
+        }
+        check.close();
+        db.close();
+        return  rv;
     }
 
 

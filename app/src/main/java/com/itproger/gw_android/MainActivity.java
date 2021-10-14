@@ -4,17 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -66,18 +70,17 @@ public class MainActivity extends AppCompatActivity {
                     }else{
                         dataBase.insertData(link_var, link_name_var);
                         btn.setText("Готово!");
+                        link.setText("");
+                        link_name.setText("");
                         loadAllTask();
                     }
                         }
                 }
         });
 
-//        link_name_row.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+
+
+
 
 //        link_list_row.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
@@ -102,15 +105,46 @@ public class MainActivity extends AppCompatActivity {
         if(arrayAdapter == null){
             arrayAdapter = new ArrayAdapter<String>(this, R.layout.link_list_row, R.id.link_name_row, allTask);
             list.setAdapter(arrayAdapter);
-           // link_name_row.setText(Html.fromHtml("<a href='test'>link_name</a>"));
             link.setText("");
             link_name.setText("");
+
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
+                                        long id) {
+                String browser = "https://www."+dataBase.findLink(allTask.get(position));
+//                    Toast.makeText(getApplicationContext(),"link: " +  allTask.get(position),
+//                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"link: " +  browser,
+                            Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(browser));
+                    startActivity(i);
+
+                }
+            });
+                    list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                           AdapterView parent = (AdapterView) view.getParent();
+                            TextView textView = parent.findViewById(R.id.link_name_row);
+                            String task = String.valueOf(textView.getText());
+                            dataBase.deleteData(task);
+                            loadAllTask();
+
+
+                            return true;
+                        }
+                    });
+
         }else{
             arrayAdapter.clear();
             arrayAdapter.addAll(allTask);
             arrayAdapter.notifyDataSetChanged();
         }
    }
+
 
 
 }
